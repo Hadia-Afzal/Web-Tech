@@ -1,0 +1,19 @@
+.topbar{
+    background-color: pink;
+    border: 3px solid black;
+}
+
+.mainmenu{
+    background-color: darkcyan;
+    border: 3px solid brown;
+}
+
+.content{
+    background-color: darkred;
+    border: 3px solid maroon;
+}
+
+.footer{
+    background-color: aquamarine;
+    border: 3px solid rgb(140, 60, 72);
+}
