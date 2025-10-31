@@ -1,4 +1,0 @@
-# Ignore Cisco Packet Tracer temp/log files
-AppData/
-*.log
-*.old
