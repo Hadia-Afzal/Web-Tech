@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts Manager - CRUD App</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+            padding-bottom: 50px;
+        }
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border: none;
+        }
+        .card-header {
+            background-color: #0d6efd;
+            color: white;
+            font-weight: 600;
+        }
+        .btn-action {
+            margin: 0 2px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1055;
+        }
+        .post-card {
+            transition: all 0.3s ease;
+        }
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+        @media (max-width: 768px) {
+            .action-buttons {
+                justify-content: flex-start;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="display-4">Posts Manager</h1>
+                <p class="lead">A single-page CRUD application using jQuery and REST API</p>
+            </div>
+        </div>
+
+        <!-- Toast notifications -->
+        <div class="toast-container">
+            <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+            <div id="errorToast" class="toast align-items-center text-white bg-danger border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create/Edit Form -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-edit me-2"></i>
+                        <span id="formTitle">Add New Post</span>
+                    </div>
+                    <div class="card-body">
+                        <form id="postForm">
+                            <input type="hidden" id="postId">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="body" class="form-label">Content</label>
+                                <textarea class="form-control" id="body" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="userId" class="form-label">User ID</label>
+                                <input type="number" class="form-control" id="userId" min="1" max="10" value="1" required>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" id="cancelBtn" class="btn btn-secondary me-2" style="display: none;">Cancel</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-1"></i> Save Post
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Posts List -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-list me-2"></i> Posts List</span>
+                        <button id="refreshBtn" class="btn btn-sm btn-outline-light">
+                            <i class="fas fa-sync-alt me-1"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="loading" class="loading">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading posts...</p>
+                        </div>
+                        <div id="postsList" class="row">
+                            <!-- Posts will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize toasts
+            const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+            const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+
+            // Show notification
+            function showNotification(message, isSuccess = true) {
+                const toast = isSuccess ? successToast : errorToast;
+                const toastBody = document.querySelector(isSuccess ? '#successToast .toast-body' : '#errorToast .toast-body');
+                toastBody.textContent = message;
+                toast.show();
+            }
+
+            // Load posts on page load
+            loadPosts();
+
+            // Refresh button click event
+            $('#refreshBtn').click(function() {
+                loadPosts();
+            });
+
+            // Form submit event
+            $('#postForm').submit(function(e) {
+                e.preventDefault();
+                savePost();
+            });
+
+            // Cancel button click event
+            $('#cancelBtn').click(function() {
+                resetForm();
+            });
+
+            // Load posts from API
+            function loadPosts() {
+                $('#loading').show();
+                $('#postsList').empty();
+
+                $.ajax({
+                    url: 'https://jsonplaceholder.typicode.com/posts',
+                    method: 'GET',
+                    success: function(posts) {
+                        $('#loading').hide();
+                        displayPosts(posts.slice(0, 12)); // Show only first 12 posts for demo
+                    },
+                    error: function() {
+                        $('#loading').hide();
+                        showNotification('Failed to load posts. Please try again.', false);
+                    }
+                });
+            }
+
+            // Display posts in the UI
+            function displayPosts(posts) {
+                let html = '';
+                
+                posts.forEach(post => {
+                    html += `
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card post-card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">${post.title}</h5>
+                                    <p class="card-text">${post.body.substring(0, 100)}...</p>
+                                    <div class="text-muted small mb-3">
+                                        <i class="fas fa-user me-1"></i> User ID: ${post.userId} | 
+                                        <i class="fas fa-hashtag me-1"></i> ID: ${post.id}
+                                    </div>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-outline-primary btn-action edit-btn" data-id="${post.id}">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger btn-action delete-btn" data-id="${post.id}">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                $('#postsList').html(html);
+                
+                // Add event listeners to edit buttons
+                $('.edit-btn').click(function() {
+                    const postId = $(this).data('id');
+                    editPost(postId);
+                });
+                
+                // Add event listeners to delete buttons
+                $('.delete-btn').click(function() {
+                    const postId = $(this).data('id');
+                    deletePost(postId);
+                });
+            }
+
+            // Save post (Create or Update)
+            function savePost() {
+                const postId = $('#postId').val();
+                const title = $('#title').val();
+                const body = $('#body').val();
+                const userId = $('#userId').val();
+                
+                const postData = {
+                    title: title,
+                    body: body,
+                    userId: parseInt(userId)
+                };
+                
+                // Determine if we're creating or updating
+                const isUpdate = postId !== '';
+                const url = isUpdate 
+                    ? `https://jsonplaceholder.typicode.com/posts/${postId}`
+                    : 'https://jsonplaceholder.typicode.com/posts';
+                
+                const method = isUpdate ? 'PUT' : 'POST';
+                
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data: JSON.stringify(postData),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        // Since JSONPlaceholder doesn't actually save data, we simulate the behavior
+                        if (isUpdate) {
+                            showNotification('Post updated successfully!');
+                        } else {
+                            showNotification('Post created successfully!');
+                            // Add the new post to the UI (simulated)
+                            const newPost = {
+                                id: response.id || Math.floor(Math.random() * 1000) + 100, // Generate random ID for demo
+                                title: title,
+                                body: body,
+                                userId: parseInt(userId)
+                            };
+                            
+                            // Prepend the new post to the list
+                            const newPostHtml = `
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card post-card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${newPost.title}</h5>
+                                            <p class="card-text">${newPost.body.substring(0, 100)}...</p>
+                                            <div class="text-muted small mb-3">
+                                                <i class="fas fa-user me-1"></i> User ID: ${newPost.userId} | 
+                                                <i class="fas fa-hashtag me-1"></i> ID: ${newPost.id}
+                                            </div>
+                                            <div class="action-buttons">
+                                                <button class="btn btn-sm btn-outline-primary btn-action edit-btn" data-id="${newPost.id}">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger btn-action delete-btn" data-id="${newPost.id}">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            $('#postsList').prepend(newPostHtml);
+                            
+                            // Add event listeners to the new buttons
+                            $(`button.edit-btn[data-id="${newPost.id}"]`).click(function() {
+                                editPost(newPost.id);
+                            });
+                            
+                            $(`button.delete-btn[data-id="${newPost.id}"]`).click(function() {
+                                deletePost(newPost.id);
+                            });
+                        }
+                        
+                        resetForm();
+                        // In a real app, we would reload the posts list
+                        // loadPosts();
+                    },
+                    error: function() {
+                        showNotification(`Failed to ${isUpdate ? 'update' : 'create'} post. Please try again.`, false);
+                    }
+                });
+            }
+
+            // Edit post
+            function editPost(id) {
+                $.ajax({
+                    url: `https://jsonplaceholder.typicode.com/posts/${id}`,
+                    method: 'GET',
+                    success: function(post) {
+                        $('#postId').val(post.id);
+                        $('#title').val(post.title);
+                        $('#body').val(post.body);
+                        $('#userId').val(post.userId);
+                        
+                        $('#formTitle').text('Edit Post');
+                        $('#cancelBtn').show();
+                        
+                        // Scroll to form
+                        $('html, body').animate({
+                            scrollTop: $('#postForm').offset().top - 20
+                        }, 500);
+                    },
+                    error: function() {
+                        showNotification('Failed to load post for editing. Please try again.', false);
+                    }
+                });
+            }
+
+            // Delete post
+            function deletePost(id) {
+                if (confirm('Are you sure you want to delete this post?')) {
+                    $.ajax({
+                        url: `https://jsonplaceholder.typicode.com/posts/${id}`,
+                        method: 'DELETE',
+                        success: function() {
+                            showNotification('Post deleted successfully!');
+                            // Remove the post from the UI
+                            $(`button.delete-btn[data-id="${id}"]`).closest('.col-md-6').remove();
+                        },
+                        error: function() {
+                            showNotification('Failed to delete post. Please try again.', false);
+                        }
+                    });
+                }
+            }
+
+            // Reset form
+            function resetForm() {
+                $('#postForm')[0].reset();
+                $('#postId').val('');
+                $('#formTitle').text('Add New Post');
+                $('#cancelBtn').hide();
+            }
+        });
+    </script>
+</body>
+</html>
