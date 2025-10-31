@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Services - BeCallCenter</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #0089f7;
+        --primary-dark: #0074d4;
+        --secondary: #f1991b;
+        --secondary-dark: #d88713;
+        --dark: #1a1b1c;
+        --light: #f8f9fa;
+        --gray: #686f74;
+        --gray-light: #e9ecef;
+        --white: #ffffff;
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 1rem;
+        --spacing-md: 2rem;
+        --spacing-lg: 3rem;
+        --spacing-xl: 5rem;
+        --border-radius: 4px;
+        --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        font-size: 13px;
+        line-height: 21px;
+        font-weight: 400;
+        color: var(--gray);
+        background-color: var(--white);
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Montserrat", sans-serif;
+        color: var(--dark);
+        margin-bottom: var(--spacing-sm);
+        line-height: 1.2;
+        font-weight: 300;
+      }
+
+      h1 {
+        font-size: 48px;
+        line-height: 48px;
+      }
+
+      h2 {
+        font-size: 32px;
+        line-height: 32px;
+      }
+
+      h3 {
+        font-size: 25px;
+        line-height: 27px;
+      }
+
+      h4 {
+        font-size: 21px;
+        line-height: 25px;
+      }
+
+      h5 {
+        font-size: 16px;
+        line-height: 20px;
+        font-family: "Roboto", sans-serif;
+        font-weight: 400;
+      }
+
+      p {
+        margin-bottom: var(--spacing-sm);
+      }
+
+      a {
+        color: var(--secondary);
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      a:hover,
+      a:focus {
+        color: var(--secondary-dark);
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 var(--spacing-sm);
+      }
+
+      /* Header Styles */
+      header {
+        background-color: #404549;
+        position: relative;
+      }
+
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0;
+        height: 60px;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--white);
+        display: flex;
+        align-items: center;
+      }
+
+      .logo img {
+        height: 28px;
+      }
+
+      .nav-menu {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-menu li {
+        margin-left: var(--spacing-md);
+      }
+
+      .nav-menu a {
+        color: #444444;
+        font-weight: 400;
+        font-size: 28px;
+        letter-spacing: 0;
+      }
+
+      .nav-menu a:hover,
+      .nav-menu a:focus {
+        color: var(--secondary);
+      }
+
+      .mobile-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--secondary);
+      }
+
+      /* Hero Section */
+      .hero {
+        background-color: #e2e7e7;
+        padding: 0;
+        position: relative;
+        overflow: hidden;
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+      }
+
+      .hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("https://themes.muffingroup.com/be/callcenter/wp-content/uploads/2015/05/home_callcenter_slider_bg.jpg");
+        background-size: cover;
+        background-position: center;
+        z-index: 1;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 1176px;
+        margin: 0 auto;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        line-height: 48px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: white;
+        margin-bottom: 0;
+      }
+
+      /* Services Section */
+      .services-section {
+        padding: 100px 0 80px;
+        background-color: white;
+      }
+
+      .services-title {
+        text-align: center;
+        color: var(--dark);
+        margin-bottom: 60px;
+      }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+      }
+
+      .service-card {
+        background-color: white;
+        padding: 40px 30px;
+        text-align: center;
+        transition: var(--transition);
+        border: 1px solid #eee;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+      }
+
+      .service-card:hover,
+      .service-card:focus-within {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .service-icon {
+        margin: 20px auto;
+        width: 91px;
+        height: 90px;
+        background-color: var(--light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .service-icon i {
+        font-size: 40px;
+        color: var(--secondary);
+      }
+
+      .service-card h4 {
+        margin-bottom: 15px;
+      }
+
+      .service-card p {
+        color: #9da3a3;
+        margin-bottom: 20px;
+      }
+
+      .service-price {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: 20px;
+      }
+
+      .btn-service {
+        background-color: var(--secondary);
+        color: white;
+        padding: 10px 20px;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      .btn-service:hover {
+        background-color: var(--secondary-dark);
+        color: white;
+      }
+
+      /* Features Section */
+      .features-section {
+        padding: 80px 0;
+        background-color: #f4f4f4;
+      }
+
+      .features-title {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .feature-item {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .feature-icon {
+        font-size: 40px;
+        color: var(--primary);
+        margin-bottom: 20px;
+      }
+
+      /* Testimonials Section */
+      .testimonials-section {
+        padding: 80px 0 40px;
+        background-color: white;
+      }
+
+      .testimonial-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+      }
+
+      .testimonial-content {
+        padding: 30px 4% 0 15%;
+        text-align: right;
+      }
+
+      .testimonial-content h2 {
+        margin-bottom: 30px;
+      }
+
+      .testimonial-content p.big {
+        font-size: 16px;
+        line-height: 28px;
+      }
+
+      .testimonial-logo {
+        text-align: center;
+      }
+
+      .testimonial-quote {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-top: 30px;
+      }
+
+      .testimonial-avatar {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .testimonial-text {
+        flex: 1;
+      }
+
+      .quote-icon {
+        margin-bottom: 20px;
+      }
+
+      .testimonial-text p {
+        font-size: 16px;
+        line-height: 26px;
+        font-family: "Lora", serif;
+        color: #686f74;
+        font-style: italic;
+        margin-bottom: 15px;
+      }
+
+      /* CTA Section */
+      .cta-section {
+        background-color: var(--secondary);
+        padding: 100px 0;
+        text-align: center;
+        color: white;
+      }
+
+      .cta-section h2 {
+        color: white;
+        margin-bottom: 25px;
+      }
+
+      .cta-separator {
+        margin: 0 auto 25px;
+        width: 150px;
+        height: 5px;
+        background-color: #000;
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--white);
+        color: #a0a0a0;
+        padding: 70px 0 0;
+      }
+
+      .footer-widgets {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        margin-bottom: 60px;
+      }
+
+      .footer-column h4 {
+        color: #626263;
+        margin-bottom: 20px;
+        font-size: 15px;
+      }
+
+      .footer-links {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 8px;
+        line-height: 32px;
+      }
+
+      .footer-links i {
+        color: var(--secondary);
+        margin-right: 5px;
+      }
+
+      .footer-links a {
+        color: #626263;
+      }
+
+      .footer-links a:hover,
+      .footer-links a:focus {
+        color: #454545;
+      }
+
+      .social-icons {
+        font-size: 24px;
+        line-height: 30px;
+        margin-top: 15px;
+      }
+
+      .social-icons a {
+        margin-right: 10px;
+      }
+
+      .footer-copy {
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        padding-top: 20px;
+        text-align: center;
+        font-size: 0.875rem;
+        color: rgba(0, 0, 0, 0.7);
+        position: relative;
+      }
+
+      .back-to-top {
+        position: absolute;
+        right: 0;
+        top: -40px;
+        color: #65666c;
+        background: transparent;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      /* Focus styles for accessibility */
+      a:focus,
+      button:focus,
+      .btn:focus {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 1024px) {
+        h1 {
+          font-size: 41px;
+          line-height: 41px;
+        }
+
+        h2 {
+          font-size: 27px;
+          line-height: 27px;
+        }
+
+        h3 {
+          font-size: 21px;
+          line-height: 23px;
+        }
+
+        .hero {
+          height: 400px;
+        }
+
+        .services-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .footer-widgets {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 36px;
+          line-height: 36px;
+        }
+
+        h2 {
+          font-size: 24px;
+          line-height: 24px;
+        }
+
+        h3 {
+          font-size: 19px;
+          line-height: 20px;
+        }
+
+        .hero {
+          height: 300px;
+        }
+
+        .nav-menu {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background-color: white;
+          flex-direction: column;
+          padding: var(--spacing-md);
+          box-shadow: var(--shadow);
+        }
+
+        .nav-menu.active {
+          display: flex;
+        }
+
+        .nav-menu li {
+          margin: var(--spacing-xs) 0;
+        }
+
+        .mobile-toggle {
+          display: block;
+        }
+
+        .testimonial-container {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+
+        .footer-widgets {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 29px;
+          line-height: 29px;
+        }
+
+        h2 {
+          font-size: 19px;
+          line-height: 19px;
+        }
+
+        h3 {
+          font-size: 15px;
+          line-height: 19px;
+        }
+
+        .hero {
+          height: 250px;
+        }
+
+        .testimonial-quote {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container header-container">
+        <a href="#" class="logo">
+          <img
+            src="https://themes.muffingroup.com/be/callcenter/wp-content/uploads/2015/05/retina-callcenter.png"
+            alt="CallCenter"
+          />
+        </a>
+        <button
+          class="mobile-toggle"
+          id="mobileToggle"
+          aria-label="Toggle navigation menu"
+        >
+          ☰
+        </button>
+        <nav>
+          <ul class="nav-menu" id="navMenu">
+            <li><a href="#home">HOME</a></li>
+            <li><a href="#services">SERVICES</a></li>
+            <li><a href="#the-company">THE COMPANY</a></li>
+            <li><a href="#work-for-us">WORK FOR US</a></li>
+            <li><a href="#blog">BLOG</a></li>
+            <li><a href="#contact-us">CONTACT US</a></li>
+            <li><a href="checkout.html" style="color: #985a00">BUY NOW</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <h1>PREMIUM CALL CENTER<br />SOLUTIONS FOR YOUR BUSINESS</h1>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section" id="services">
+      <div class="container">
+        <h2 class="services-title">OUR PREMIUM SERVICES</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-headset"></i>
+            </div>
+            <h4>SALES SUPPORT</h4>
+            <p>
+              Professional sales team to handle your customer acquisition and
+              conversion. Our trained agents will represent your brand with
+              excellence.
+            </p>
+            <div class="service-price">$199.00/month</div>
+            <a
+              href="checkout.html?service=sales-support&price=199.00"
+              class="btn-service"
+              >SELECT PLAN</a
+            >
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-bullhorn"></i>
+            </div>
+            <h4>ADVERTISING CAMPAIGNS</h4>
+            <p>
+              Complete management of your advertising campaigns with strategic
+              outreach and conversion optimization for maximum ROI.
+            </p>
+            <div class="service-price">$299.00/month</div>
+            <a
+              href="checkout.html?service=advertising-campaigns&price=299.00"
+              class="btn-service"
+              >SELECT PLAN</a
+            >
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-life-ring"></i>
+            </div>
+            <h4>24/7 HELP DESK</h4>
+            <p>
+              Round-the-clock customer support to ensure your clients receive
+              assistance whenever they need it, building loyalty and trust.
+            </p>
+            <div class="service-price">$149.00/month</div>
+            <a
+              href="checkout.html?service=help-desk&price=149.00"
+              class="btn-service"
+              >SELECT PLAN</a
+            >
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h4>ANALYTICS DASHBOARD</h4>
+            <p>
+              Comprehensive performance tracking with detailed insights and
+              reporting to help you make data-driven business decisions.
+            </p>
+            <div class="service-price">$50.00/month</div>
+            <a
+              href="checkout.html?service=analytics-dashboard&price=50.00"
+              class="btn-service"
+              >SELECT PLAN</a
+            >
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-phone-volume"></i>
+            </div>
+            <h4>INBOUND CALL HANDLING</h4>
+            <p>
+              Professional management of all incoming calls with scripted
+              responses and escalation procedures for complex inquiries.
+            </p>
+            <div class="service-price">$179.00/month</div>
+            <a
+              href="checkout.html?service=inbound-calls&price=179.00"
+              class="btn-service"
+              >SELECT PLAN</a
+            >
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <h4>MULTI-CHANNEL SUPPORT</h4>
+            <p>
+              Unified customer support across phone, email, chat, and social
+              media platforms for a seamless customer experience.
+            </p>
+            <div class="service-price">$249.00/month</div>
+            <a
+              href="checkout.html?service=multi-channel&price=249.00"
+              class="btn-service"
+              >SELECT PLAN</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+      <div class="container">
+        <h2 class="features-title">WHY CHOOSE OUR SERVICES</h2>
+        <div class="row">
+          <div class="col-md-4 feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-award"></i>
+            </div>
+            <h4>20 YEARS EXPERIENCE</h4>
+            <p>
+              Two decades of excellence in call center solutions with proven
+              track record.
+            </p>
+          </div>
+          <div class="col-md-4 feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h4>820 ACTIVE WORKPLACES</h4>
+            <p>
+              Extensive network of professionals ready to handle your customer
+              needs.
+            </p>
+          </div>
+          <div class="col-md-4 feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-project-diagram"></i>
+            </div>
+            <h4>1300+ PROJECTS DONE</h4>
+            <p>
+              Successful implementation across diverse industries and business
+              sizes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="testimonial-container">
+          <div class="testimonial-content">
+            <h2>VINTAGE FASHION GROUP</h2>
+            <p class="big">
+              "BeCallCenter transformed our customer service operations. Their
+              professional team handles our sales and support with exceptional
+              quality, resulting in a 40% increase in customer satisfaction."
+            </p>
+          </div>
+          <div class="testimonial-logo">
+            <img
+              src="https://via.placeholder.com/200x100.png?text=VINTAGE+FASHION"
+              alt="Vintage Fashion Group"
+            />
+          </div>
+        </div>
+
+        <div class="testimonial-quote">
+          <div class="testimonial-avatar">
+            <img
+              src="https://via.placeholder.com/140x140.png?text=CEO"
+              alt="Paul Tincidunt"
+            />
+          </div>
+          <div class="testimonial-text">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left fa-2x" style="color: #f1991b"></i>
+            </div>
+            <p>
+              "The analytics dashboard provided by BeCallCenter gave us insights
+              we never had before. We can now make data-driven decisions that
+              have improved our conversion rates by 28%."
+            </p>
+            <h5>Paul Tincidunt, CEO</h5>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>
+          READY TO TRANSFORM YOUR CUSTOMER EXPERIENCE?<br />GET STARTED WITH OUR
+          PREMIUM SERVICES TODAY
+        </h2>
+        <div class="cta-separator"></div>
+        <a href="checkout.html" class="btn btn-primary btn-lg"
+          >GET STARTED NOW</a
+        >
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-widgets">
+          <div class="footer-column">
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-caret-right" aria-hidden="true"></i>
+                <a href="#">Quent per conubia nostra</a>
+              </li>
+              <li>
+                <i class="fas fa-caret-right" aria-hidden="true"></i>
+                <a href="#">Nceptos himenaeos</a>
+              </li>
+              <li>
+                <i class="fas fa-caret-right" aria-hidden="true"></i>
+                <a href="#">Mauris in erat</a>
+              </li>
+              <li>
+                <i class="fas fa-caret-right" aria-hidden="true"></i>
+                <a href="#">Lustoac</a>
+              </li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-caret-right" aria-hidden="true"></i>
+                <a href="#">Aenean sollicitudin orem qui</a>
+              </li>
+              <li>
+                <i class="fas fa-caret-right" aria-hidden="true"></i>
+                <a href="#">Duis sed odio sit amet nibh</a>
+              </li>
+              <li>
+                <i class="fas fa-caret-right" aria-hidden="true"></i>
+                <a href="#">Morbi accumsan ipsum velit</a>
+              </li>
+              <li>
+                <i class="fas fa-caret-right" aria-hidden="true"></i>
+                <a href="#">Nam nec tellus</a>
+              </li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Contact centre</h4>
+            <p>
+              Contact us: +61 (0) 3 8376 6284<br />
+              Write us:
+              <a href="mailto:noreply@envato.com">noreply@envato.com</a>
+            </p>
+            <p>Find us here:</p>
+            <div class="social-icons">
+              <a href="#" aria-label="Facebook"
+                ><i class="fab fa-facebook" aria-hidden="true"></i
+              ></a>
+              <a href="#" aria-label="Google Plus"
+                ><i class="fab fa-google-plus" aria-hidden="true"></i
+              ></a>
+              <a href="#" aria-label="Twitter"
+                ><i class="fab fa-twitter" aria-hidden="true"></i
+              ></a>
+              <a href="#" aria-label="Pinterest"
+                ><i class="fab fa-pinterest" aria-hidden="true"></i
+              ></a>
+            </div>
+          </div>
+          <div class="footer-column">
+            <h4>Our mission</h4>
+            <p>
+              In ut ipsum ac diam egestas fermentum. Praesent laoreet semper
+              lectus! Sed sagittis sit amet enim quis blandit? Integer tempus
+              tortor nunc diam egestas.
+            </p>
+          </div>
+        </div>
+
+        <div class="footer-copy">
+          <button class="back-to-top" aria-label="Back to top">
+            <i class="fas fa-chevron-up" aria-hidden="true"></i>
+          </button>
+          <p>
+            &copy; 2025 Betheme by
+            <a href="https://muffingroup.com" target="_blank">Muffin group</a> |
+            All Rights Reserved | Powered by
+            <a href="https://wordpress.org" target="_blank">WordPress</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu toggle
+      document
+        .getElementById("mobileToggle")
+        .addEventListener("click", function () {
+          document.getElementById("navMenu").classList.toggle("active");
+        });
+
+      // Back to top button
+      document
+        .querySelector(".back-to-top")
+        .addEventListener("click", function () {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+      // Function to get URL parameters
+      function getUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+          service: params.get("service"),
+          price: params.get("price"),
+        };
+      }
+
+      // If coming from checkout with parameters, show a confirmation message
+      window.addEventListener("DOMContentLoaded", function () {
+        const params = getUrlParams();
+        if (params.service && params.price) {
+          console.log(
+            `Selected service: ${params.service}, Price: $${params.price}`
+          );
+          // You could display a confirmation message here if needed
+        }
+      });
+    </script>
+  </body>
+</html>
