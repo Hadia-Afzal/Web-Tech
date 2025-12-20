@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0089f7;
+            --secondary: #f1991b;
+        }
+        .empty-cart {
+            text-align: center;
+            padding: 60px 0;
+        }
+        .cart-item {
+            padding: 20px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .quantity-input {
+            width: 70px;
+            text-align: center;
+        }
+        .discount-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-headset me-2"></i>BeCallCenter
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/products">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/cart">Cart</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <h1 class="mb-4">Shopping Cart</h1>
+        
+        <% if (cart.items.length === 0) { %>
+            <!-- Empty Cart -->
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
+                <h3 class="text-muted mb-3">Your cart is empty</h3>
+                <p class="text-muted mb-4">Add some services to get started</p>
+                <a href="/products" class="btn btn-primary btn-lg">
+                    <i class="fas fa-store me-2"></i>Browse Services
+                </a>
+            </div>
+        <% } else { %>
+            <!-- Cart with Items -->
+            <div class="row">
+                <!-- Cart Items -->
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-shopping-cart me-2"></i>Cart Items</h5>
+                        </div>
+                        <div class="card-body">
+                            <% cart.items.forEach((item, index) => { %>
+                                <div class="cart-item">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2">
+                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                                 style="width: 50px; height: 50px;">
+                                                <i class="fas fa-headset"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6 class="mb-1"><%= item.name %></h6>
+                                            <small class="text-muted">Service ID: <%= item.productId %></small>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text">Qty</span>
+                                                <input type="number" class="form-control quantity-input" 
+                                                       value="<%= item.quantity %>" min="1" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h6 class="mb-0">$<%= item.total.toFixed(2) %></h6>
+                                            <small class="text-muted">$<%= item.price.toFixed(2) %> each</small>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <form action="/cart/remove/<%= item.productId %>" method="POST">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                            
+                            <!-- Cart Actions -->
+                            <div class="mt-4">
+                                <form action="/cart/clear" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        <i class="fas fa-trash me-2"></i>Clear Cart
+                                    </button>
+                                </form>
+                                <a href="/products" class="btn btn-outline-primary ms-2">
+                                    <i class="fas fa-plus me-2"></i>Add More Items
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Discount Banner -->
+                    <div class="discount-banner mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-tag fa-2x me-3"></i>
+                            <div>
+                                <h5 class="mb-1">Special Offer!</h5>
+                                <p class="mb-0">Use coupon code <strong>SAVE10</strong> during checkout for 10% off your total order!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-receipt me-2"></i>Order Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Subtotal:</span>
+                                    <span>$<%= cart.subtotal.toFixed(2) %></span>
+                                </div>
+                                
+                                <% if (cart.discount && cart.discount > 0) { %>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>
+                                            Discount <span class="badge bg-success">SAVE10</span>:
+                                        </span>
+                                        <span class="text-success">-$<%= cart.discount.toFixed(2) %></span>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>After Discount:</span>
+                                        <span>$<%= (cart.subtotal - cart.discount).toFixed(2) %></span>
+                                    </div>
+                                <% } %>
+                                
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Estimated Tax (8%):</span>
+                                    <span>$<%= ((cart.subtotal - (cart.discount || 0)) * 0.08).toFixed(2) %></span>
+                                </div>
+                                
+                                <hr>
+                                
+                                <div class="d-flex justify-content-between">
+                                    <strong>Estimated Total:</strong>
+                                    <strong class="fs-5">$<%= cart.total.toFixed(2) %></strong>
+                                </div>
+                            </div>
+                            
+                            <!-- Checkout Button -->
+                            <div class="d-grid mt-4">
+                                <a href="/order/preview" class="btn btn-success btn-lg">
+                                    <i class="fas fa-lock me-2"></i>Proceed to Checkout
+                                </a>
+                            </div>
+                            
+                            <!-- Continue Shopping -->
+                            <div class="text-center mt-3">
+                                <a href="/products" class="text-decoration-none">
+                                    <i class="fas fa-arrow-left me-1"></i>Continue Shopping
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cart Info -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h6><i class="fas fa-info-circle me-2"></i>Cart Information</h6>
+                            <ul class="list-unstyled small mb-0">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    <%= cart.items.length %> item(s) in cart
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Total quantity: <%= cart.items.reduce((sum, item) => sum + item.quantity, 0) %>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Secure checkout available
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>BeCallCenter Cart</h6>
+                    <p class="small mb-0">Add services to cart for checkout</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="small mb-0">
+                        <i class="fas fa-shopping-cart me-1"></i>Session-based Cart
+                        <span class="mx-2">|</span>
+                        <i class="fas fa-code me-1"></i>Lab Final Exam
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
